@@ -1,4 +1,4 @@
-package com.queue.hospital.QueueHospital.adapters.rest;
+package com.queue.hospital.QueueHospital.adapters.rest.controller;
 
 import com.queue.hospital.QueueHospital.usecases.SendInfoQueueHospital;
 import org.springframework.beans.factory.annotation.Autowired;
