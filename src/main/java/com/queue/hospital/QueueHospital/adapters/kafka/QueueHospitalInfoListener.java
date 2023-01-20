@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueueHospitalInfoListener {
 
-    @KafkaListener(topics = "topic-event-test")
+    @KafkaListener(topics = "topic-update-info-queue")
     public void consume(@Payload String valor, Acknowledgment ack) {
 
         //TODO Processar registro
