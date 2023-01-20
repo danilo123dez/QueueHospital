@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS hospital(
     id INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     endereco VARCHAR(255) NOT NULL,
-    telefone VARCHAR(15) NOT NULL,
+    telefone VARCHAR(11) NOT NULL,
     CONSTRAINT hospital_pkey PRIMARY KEY (id)
 );
 

@@ -39,8 +39,8 @@ public class HospitalController {
         return ResponseEntity.ok(HospitalDTO.convert(hospitais));
     }
     @GetMapping("/{hospital}")
-    public ResponseEntity<?> speciftHospital(@PathVariable String hospital){
-        Optional<Hospital> hosp = hospitalRepository.findByNome(hospital);
+    public ResponseEntity<?> speciftHospital(@PathVariable Long hospital){
+        Optional<Hospital> hosp = hospitalRepository.findById(hospital);
         if(!hosp.isPresent()){
             List<String> erro = new ArrayList<>();
             erro.add("Hospital informado não existe no banco.");
@@ -54,5 +54,24 @@ public class HospitalController {
         Hospital hospital = request.get();
         entityManager.persist(hospital);
         return ResponseEntity.status(HttpStatus.CREATED).body(new HospitalDTO(hospital));
+    }
+    @DeleteMapping("/{hospital}")
+    @Transactional
+    public ResponseEntity<?> deleteHospital(@PathVariable Long hospital){
+        Optional<Hospital> hosp = hospitalRepository.findById(hospital);
+        if(!hosp.isPresent()){
+            List<String> erro = new ArrayList<>();
+            erro.add("Hospital informado não existe no banco.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(erro));
+        }
+        hospitalRepository.deleteById(hospital);
+        return ResponseEntity.ok("Hospital deletado com sucesso!");
+    }
+    @PatchMapping("/{hospital}")
+    @Transactional
+    public ResponseEntity<HospitalDTO> updateHospital(@PathVariable Long hospital, @RequestBody @Valid HospitalRequest request){
+        Hospital hosp = entityManager.find(Hospital.class, hospital);
+        hosp.update(request.get());
+        return ResponseEntity.ok().body(new HospitalDTO(hosp));
     }
 }
