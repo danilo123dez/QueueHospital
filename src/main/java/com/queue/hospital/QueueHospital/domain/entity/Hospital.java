@@ -28,4 +28,10 @@ public class Hospital {
         this.endereco = endereco;
         this.telefone = telefone;
     }
+
+    public void update(Hospital hospital){
+        this.nome = hospital.getNome();
+        this.endereco = hospital.getEndereco();
+        this.telefone = hospital.getTelefone();
+    }
 }
