@@ -1,22 +1,33 @@
 package com.queue.hospital.QueueHospital.adapters.rest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.queue.hospital.QueueHospital.adapters.rest.dto.DetalhesHospitalDTO;
 import com.queue.hospital.QueueHospital.adapters.rest.dto.HospitalDTO;
 import com.queue.hospital.QueueHospital.adapters.rest.handler.ErrorMessage;
 import com.queue.hospital.QueueHospital.adapters.rest.request.HospitalRequest;
 import com.queue.hospital.QueueHospital.domain.entity.Hospital;
+import com.queue.hospital.QueueHospital.domain.entity.RedisEntity;
 import com.queue.hospital.QueueHospital.domain.repository.HospitalRepository;
+import com.queue.hospital.QueueHospital.domain.repository.RedisRepository;
+
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("queue-hospital")
@@ -26,6 +37,9 @@ public class HospitalController {
     HospitalRepository hospitalRepository;
     @Autowired
     EntityManager entityManager;
+    
+    @Autowired
+	private RedisRepository redisRepository;
 
 
     @GetMapping("/near")
@@ -73,5 +87,15 @@ public class HospitalController {
         Hospital hosp = entityManager.find(Hospital.class, hospital);
         hosp.update(request.get());
         return ResponseEntity.ok().body(new HospitalDTO(hosp));
+    }
+    
+    @GetMapping("/listar_todos")
+    public List<RedisEntity> selectAll() {
+    	return redisRepository.findAll();
+    }
+    
+    @GetMapping("/listar_selecionado/{selecionado}")
+    public Optional<RedisEntity> selectSelecionado(@PathVariable String selecionado) {
+    	return redisRepository.findById(selecionado);
     }
 }
