@@ -30,7 +30,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("queue-hospital")
+@RequestMapping("hospital")
 public class HospitalController {
 
     @Autowired
@@ -89,13 +89,13 @@ public class HospitalController {
         return ResponseEntity.ok().body(new HospitalDTO(hosp));
     }
     
-    @GetMapping("/listar_todos")
+    @GetMapping("/queue")
     public List<RedisEntity> selectAll() {
     	return redisRepository.findAll();
     }
     
-    @GetMapping("/listar_selecionado/{selecionado}")
-    public Optional<RedisEntity> selectSelecionado(@PathVariable String selecionado) {
-    	return redisRepository.findById(selecionado);
+    @GetMapping("/queue/{hospital}")
+    public Optional<RedisEntity> selectSelecionado(@PathVariable String hospital) {
+    	return redisRepository.findById(hospital);
     }
 }
